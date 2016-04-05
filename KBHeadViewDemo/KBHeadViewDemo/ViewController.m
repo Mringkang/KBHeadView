@@ -20,16 +20,7 @@
     [super viewDidLoad];
    
 }
-- (IBAction)nextClick:(id)sender {
-    
-    
-    KBHeadViewController *headVC = [[KBHeadViewController alloc]init];
-   
-    [self.navigationController pushViewController:headVC animated:YES];
-    
-   
-    
-}
+
 
 
 

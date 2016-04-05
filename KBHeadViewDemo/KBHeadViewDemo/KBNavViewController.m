@@ -16,6 +16,9 @@
 
 @interface KBNavViewController ()<UITableViewDataSource,UITableViewDelegate>
 
+
+@property (nonatomic, strong) UILabel *titleLabel;
+
 @end
 
 @implementation KBNavViewController{
@@ -32,6 +35,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     
+    
+    [self alphaTitleView];
     [self loadTableView];
     [self loadHeadView];
     
@@ -48,6 +53,23 @@
     
     // 取消自动调整滚动视图间距
     self.automaticallyAdjustsScrollViewInsets = NO;
+}
+
+#pragma mark 设置标题渐变透明
+- (void)alphaTitleView{
+
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.text = @"详情页";
+    titleLabel.alpha = 0;
+    self.titleLabel = titleLabel;
+    self.navigationItem.titleView = titleLabel;
+
+
+
 }
 
 
@@ -114,7 +136,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
     CGFloat offset = scrollView.contentOffset.y + scrollView.contentInset.top;
-    UIColor *color = [UIColor whiteColor];
+    UIColor *color = [UIColor orangeColor];
     CGFloat alpha = offset / 210;
     
     NSLog(@"offset%f",offset); // 如果offset<0 放大,  否则上移
@@ -123,6 +145,7 @@
         
         _headimageView.height = kHeadViewHeight - offset;
         _headimageView.y = 0;
+        _titleLabel.alpha = 0;
         [self.navigationController.navigationBar kb_alphaUINavigationBarView:[color colorWithAlphaComponent:0]];
         
     }else{
@@ -133,6 +156,8 @@
         _headimageView.y = -offset;
         
         [self.navigationController.navigationBar kb_alphaUINavigationBarView:[color colorWithAlphaComponent:alpha]];
+        
+        _titleLabel.alpha = alpha;
 
         
     }
